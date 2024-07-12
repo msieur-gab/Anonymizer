@@ -2,7 +2,7 @@ const CACHE_NAME = 'data-anonymizer-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/styles.css',
+  '/style.css',
   '/script.js',
   '/manifest.json',
   '/icon-192x192.png',
