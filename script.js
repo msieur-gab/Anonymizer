@@ -9,6 +9,25 @@ window.addEventListener('beforeinstallprompt', (e) => {
   showInstallButton();
 });
 
+function showInstallButton() {
+  const installButton = document.createElement('button');
+  installButton.textContent = 'Install App';
+  installButton.classList.add('install-button');
+  document.body.appendChild(installButton);
+
+  installButton.addEventListener('click', (e) => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        }
+        deferredPrompt = null;
+      });
+    }
+  });
+}
+
 document.getElementById('uploadForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const file = document.getElementById('csvFile').files[0];
@@ -508,24 +527,7 @@ function downloadFile(content, fileName, mimeType) {
 }
 
 
-function showInstallButton() {
-  const installButton = document.createElement('button');
-  installButton.textContent = 'Install App';
-  installButton.classList.add('install-button');
-  document.body.appendChild(installButton);
 
-  installButton.addEventListener('click', (e) => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
-        }
-        deferredPrompt = null;
-      });
-    }
-  });
-}
 // document.getElementById('downloadButton').addEventListener('click', function() {
 //     const selectedColumns = Array.from(document.querySelectorAll('#columnSelection input:checked'))
 //         .map(input => parseInt(input.dataset.column));
