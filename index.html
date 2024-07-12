@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV/TSV Data Anonymizer and Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>CSV/TSV Data Anonymizer and Viewer</h1>
+    
+    <form id="uploadForm">
+        <input type="file" id="csvFile" accept=".csv,.tsv" required>
+        <button type="submit">Upload and Analyze</button>
+    </form>
+
+    <div id="emptyColumnsOptionContainer" style="display: none;"></div>
+
+    <div id="columnVisibilityDropdown" class="dropdown">
+        <button class="dropdown-toggle">Hide columns</button>
+        <div class="dropdown-menu">
+            <input type="text" id="columnSearch" placeholder="Search columns">
+            <div id="columnList"></div>
+            <div class="dropdown-actions">
+                <button id="hideAllColumns">Hide all</button>
+                <button id="showAllColumns">Show all</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="exportDropdown" class="dropdown">
+        <button class="dropdown-toggle">Export</button>
+        <div class="dropdown-menu">
+            <button id="exportCSV">CSV</button>
+            <button id="exportTSV">TSV</button>
+            <button id="exportJSON">JSON</button>
+            <button id="exportXLSX">Spreadsheet (XLSX)</button>
+        </div>
+    </div>
+
+    <div id="tableContainer" style="display: none;">
+        <h3>Data Preview:</h3>
+        <div id="columnSelection"></div>
+        <div id="tableWrapper">
+            <table id="csvTable"></table>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
