@@ -1,6 +1,13 @@
 let headers, rows;
-
+let deferredPrompt;
 let emptyColumnIndices = [];
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Show your custom "Add to Home Screen" button here
+  showInstallButton();
+});
 
 document.getElementById('uploadForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -500,6 +507,25 @@ function downloadFile(content, fileName, mimeType) {
   URL.revokeObjectURL(url);
 }
 
+
+function showInstallButton() {
+  const installButton = document.createElement('button');
+  installButton.textContent = 'Install App';
+  installButton.classList.add('install-button');
+  document.body.appendChild(installButton);
+
+  installButton.addEventListener('click', (e) => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        }
+        deferredPrompt = null;
+      });
+    }
+  });
+}
 // document.getElementById('downloadButton').addEventListener('click', function() {
 //     const selectedColumns = Array.from(document.querySelectorAll('#columnSelection input:checked'))
 //         .map(input => parseInt(input.dataset.column));
