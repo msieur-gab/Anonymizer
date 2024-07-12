@@ -1,7 +1,7 @@
 {
   "name": "CSV/TSV Data Anonymizer",
   "short_name": "Data Anonymizer",
-  "start_url": "/index.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#4a90e2",
