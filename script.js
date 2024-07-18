@@ -64,6 +64,8 @@ function parseFile(data, fileName) {
     const delimiter = fileName.endsWith('.tsv') ? '\t' : ',';
     let rows = data.split('\n').map(row => row.split(delimiter));
     headers = rows.shift();
+	// Hide the "Add API Column" button when a new file is loaded
+document.getElementById('addApiColumnBtn').style.display = 'none';
 
     // Identify empty columns
     const emptyColumnIndices = headers.reduce((acc, header, index) => {
@@ -77,6 +79,7 @@ function parseFile(data, fileName) {
 }
 
 function renderTable() {
+	await enrichDataWithAPI();
     const table = document.getElementById('csvTable');
     table.innerHTML = '';
 
@@ -103,6 +106,7 @@ function renderTable() {
         th.appendChild(resizer);
 
         headerRow.appendChild(th);
+	    document.getElementById('addApiColumnBtn').style.display = 'block';
     });
     thead.appendChild(headerRow);
     table.appendChild(thead);
