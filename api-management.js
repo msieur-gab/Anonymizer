@@ -63,12 +63,13 @@ async function enrichDataWithAPI() {
     for (const apiConfig of apiConfigurations) {
         for (let i = 0; i < rows.length; i++) {
             try {
-                let url = apiConfig.url;
+                let url = new URL(apiConfig.url); // Assurez-vous que c'est une URL valide
                 if (apiConfig.method === 'GET') {
-                    const params = apiConfig.parameters.map(paramIndex => `${headers[paramIndex]}=${encodeURIComponent(rows[i][paramIndex])}`).join('&');
-                    url += (url.includes('?') ? '&' : '?') + params;
+                    // Utilisez seulement la valeur de la cellule, pas le titre de la colonne
+                    const cellValue = rows[i][apiConfig.parameters[0]]; // Supposons que nous n'utilisons que le premier paramètre sélectionné
+                    url.searchParams.append('text', cellValue);
                 }
-                const result = await callAPI(url, apiConfig.key, apiConfig.host, apiConfig.method);
+                const result = await callAPI(url.toString(), apiConfig.key, apiConfig.host, apiConfig.method);
                 rows[i][headers.indexOf(apiConfig.name)] = apiConfig.resultKey ? result[apiConfig.resultKey] : JSON.stringify(result);
             } catch (error) {
                 console.error(`Error enriching data for row ${i} with API ${apiConfig.name}:`, error);
