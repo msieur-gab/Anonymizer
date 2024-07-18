@@ -42,6 +42,29 @@
         </div>
     </div>
 
+    <button id="addApiColumnBtn" style="display: none;">Add API Column</button>
+
+<div id="apiConfigModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h3>Configure API Column</h3>
+        <form id="apiConfigForm">
+            <input type="text" id="apiName" placeholder="Column Name" required>
+            <input type="text" id="apiUrl" placeholder="API URL" required>
+            <input type="text" id="apiKey" placeholder="API Key" required>
+            <input type="text" id="apiHost" placeholder="API Host" required>
+            <select id="apiMethod">
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+            </select>
+            <div id="parameterFields"></div>
+            <input type="text" id="apiResultKey" placeholder="Result Key in API Response">
+            <button type="submit">Add API Column</button>
+            <button type="button" id="cancelApiConfig">Cancel</button>
+        </form>
+    </div>
+</div>
+    
+
     <div id="tableContainer" style="display: none;">
         <h3>Data Preview:</h3>
         <div id="columnSelection"></div>
