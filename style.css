@@ -225,12 +225,17 @@ button:hover {
     height: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 100%;
+    max-width: 512px;
+    max-height: 80vh;
+    overflow-y: auto;
 }
