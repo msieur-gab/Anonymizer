@@ -78,7 +78,7 @@ document.getElementById('addApiColumnBtn').style.display = 'none';
     return { headers, rows, emptyColumnIndices };
 }
 
-function renderTable() {
+async function renderTable() {
 	await enrichDataWithAPI();
     const table = document.getElementById('csvTable');
     table.innerHTML = '';
