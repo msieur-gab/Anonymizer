@@ -79,7 +79,7 @@ document.getElementById('addApiColumnBtn').style.display = 'none';
 }
 
 async function renderTable() {
-	await enrichDataWithAPI();
+    await enrichDataWithAPI();
     const table = document.getElementById('csvTable');
     table.innerHTML = '';
 
@@ -106,7 +106,6 @@ async function renderTable() {
         th.appendChild(resizer);
 
         headerRow.appendChild(th);
-	    document.getElementById('addApiColumnBtn').style.display = 'block';
     });
     thead.appendChild(headerRow);
     table.appendChild(thead);
@@ -141,16 +140,20 @@ async function renderTable() {
     document.getElementById('tableContainer').style.display = 'block';
     
     calculateColumnWidths();
-		setupColumnVisibility();
-	  setupExportOptions();
-
+    setupColumnVisibility();
+    setupExportOptions();
 
     // Add event listeners for column resizing
     const resizers = table.querySelectorAll('.resizer');
     resizers.forEach(resizer => {
         resizer.addEventListener('mousedown', initResize);
     });
-	
+
+    // Show the "Add API Column" button after the table is rendered
+    document.getElementById('addApiColumnBtn').style.display = 'block';
+
+    // Update anonymization
+    updateAnonymization();
 }
 
 function isImageUrl(url) {
@@ -173,6 +176,9 @@ function setupColumnVisibility() {
   const searchInput = document.getElementById('columnSearch');
   const hideAllButton = document.getElementById('hideAllColumns');
   const showAllButton = document.getElementById('showAllColumns');
+
+  // Vider la liste existante
+  columnList.innerHTML = '';
 
   // Toggle dropdown
   toggleButton.addEventListener('click', () => {
@@ -475,18 +481,18 @@ function setupExportOptions() {
 }
 
 function getExportData() {
-  const anonymizedColumns = Array.from(document.querySelectorAll('#columnSelection input:checked'))
-    .map(input => parseInt(input.dataset.column));
+    const anonymizedColumns = Array.from(document.querySelectorAll('#columnSelection input:checked'))
+        .map(input => parseInt(input.dataset.column));
 
-  const exportRows = rows.map(row => 
-    row.map((cell, index) => 
-      anonymizedColumns.includes(index) 
-        ? anonymizeValue(cell, headers[index]) 
-        : cell
-    )
-  );
+    const exportRows = rows.map(row => 
+        row.map((cell, index) => 
+            anonymizedColumns.includes(index) 
+                ? anonymizeValue(cell, headers[index]) 
+                : cell
+        )
+    );
 
-  return [headers, ...exportRows];
+    return [headers, ...exportRows];
 }
 
 function exportCSV() {
