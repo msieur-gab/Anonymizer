@@ -52,11 +52,24 @@ function handleApiConfigSubmit(e) {
     this.reset();
 }
 
-function addAPIColumn(apiConfig) {
+async function addAPIColumn(apiConfig) {
+    const loadingMessage = document.getElementById('loadingMessage');
+    loadingMessage.style.display = 'block';
+
     headers.push(apiConfig.name);
     rows.forEach(row => row.push('')); // Add empty cell for each row
-    renderTable();
-    analyzeAndRecommend();
+
+    try {
+        await renderTable();
+        await analyzeAndRecommend();
+        updateColumnSelectionUI();
+        setupColumnVisibility(); // Ajoutez cette ligne
+        setupExportOptions(); // Ajoutez cette ligne
+    } catch (error) {
+        console.error('Error adding API column:', error);
+    } finally {
+        loadingMessage.style.display = 'none';
+    }
 }
 
 async function enrichDataWithAPI() {
