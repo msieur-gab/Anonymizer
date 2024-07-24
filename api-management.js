@@ -60,11 +60,11 @@ async function addAPIColumn(apiConfig) {
     rows.forEach(row => row.push('')); // Add empty cell for each row
 
     try {
+        await enrichDataWithAPI(apiConfig);
         await renderTable();
-        await analyzeAndRecommend();
-        updateColumnSelectionUI();
-        setupColumnVisibility(); // Ajoutez cette ligne
-        setupExportOptions(); // Ajoutez cette ligne
+        analyzeAndRecommend();
+        setupColumnVisibility();
+        setupExportOptions();
     } catch (error) {
         console.error('Error adding API column:', error);
     } finally {
@@ -72,22 +72,19 @@ async function addAPIColumn(apiConfig) {
     }
 }
 
-async function enrichDataWithAPI() {
-    for (const apiConfig of apiConfigurations) {
-        for (let i = 0; i < rows.length; i++) {
-            try {
-                let url = new URL(apiConfig.url); // Assurez-vous que c'est une URL valide
-                if (apiConfig.method === 'GET') {
-                    // Utilisez seulement la valeur de la cellule, pas le titre de la colonne
-                    const cellValue = rows[i][apiConfig.parameters[0]]; // Supposons que nous n'utilisons que le premier paramètre sélectionné
-                    url.searchParams.append('text', cellValue);
-                }
-                const result = await callAPI(url.toString(), apiConfig.key, apiConfig.host, apiConfig.method);
-                rows[i][headers.indexOf(apiConfig.name)] = apiConfig.resultKey ? result[apiConfig.resultKey] : JSON.stringify(result);
-            } catch (error) {
-                console.error(`Error enriching data for row ${i} with API ${apiConfig.name}:`, error);
-                rows[i][headers.indexOf(apiConfig.name)] = 'Error';
+async function enrichDataWithAPI(apiConfig) {
+    for (let i = 0; i < rows.length; i++) {
+        try {
+            let url = new URL(apiConfig.url);
+            if (apiConfig.method === 'GET') {
+                const cellValue = rows[i][apiConfig.parameters[0]];
+                url.searchParams.append('text', cellValue);
             }
+            const result = await callAPI(url.toString(), apiConfig.key, apiConfig.host, apiConfig.method);
+            rows[i][headers.indexOf(apiConfig.name)] = apiConfig.resultKey ? result[apiConfig.resultKey] : JSON.stringify(result);
+        } catch (error) {
+            console.error(`Error enriching data for row ${i} with API ${apiConfig.name}:`, error);
+            rows[i][headers.indexOf(apiConfig.name)] = 'Error';
         }
     }
 }
