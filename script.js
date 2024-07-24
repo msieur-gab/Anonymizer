@@ -412,6 +412,11 @@ function updateAnonymization() {
         .map(input => parseInt(input.dataset.column));
 
     const tableBody = document.querySelector('#csvTable tbody');
+    if (!tableBody) {
+        console.warn('Table body not found. Skipping anonymization update.');
+        return;
+    }
+
     tableBody.querySelectorAll('tr').forEach((tr, rowIndex) => {
         tr.querySelectorAll('td').forEach(td => {
             const columnIndex = parseInt(td.dataset.column);
@@ -426,9 +431,9 @@ function updateAnonymization() {
                 td.classList.add('anonymized');
             } else {
                 if (td.querySelector('img')) {
-                    td.querySelector('img').src = rows[tr.rowIndex - 1][columnIndex];
+                    td.querySelector('img').src = rows[rowIndex][columnIndex];
                 } else {
-                    td.textContent = rows[tr.rowIndex - 1][columnIndex];
+                    td.textContent = rows[rowIndex][columnIndex];
                 }
                 td.classList.remove('anonymized');
             }
