@@ -72,19 +72,38 @@ async function addAPIColumn(apiConfig) {
     }
 }
 
-async function enrichDataWithAPI(apiConfig) {
-    for (let i = 0; i < rows.length; i++) {
-        try {
-            let url = new URL(apiConfig.url);
-            if (apiConfig.method === 'GET') {
-                const cellValue = rows[i][apiConfig.parameters[0]];
-                url.searchParams.append('text', cellValue);
+async function enrichDataWithAPI() {
+    for (const apiConfig of apiConfigurations) {
+        if (!apiConfig || typeof apiConfig !== 'object') {
+            console.error('Invalid API configuration:', apiConfig);
+            continue;
+        }
+
+        const apiColumnIndex = headers.indexOf(apiConfig.name);
+        if (apiColumnIndex === -1) {
+            console.error(`Column "${apiConfig.name}" not found in headers.`);
+            continue;
+        }
+
+        for (let i = 0; i < rows.length; i++) {
+            try {
+                let url = new URL(apiConfig.url);
+                if (apiConfig.method === 'GET') {
+                    const paramIndex = apiConfig.parameters[0];
+                    if (paramIndex >= 0 && paramIndex < rows[i].length) {
+                        const cellValue = rows[i][paramIndex];
+                        url.searchParams.append('text', cellValue);
+                    } else {
+                        console.error(`Invalid parameter index: ${paramIndex}`);
+                        continue;
+                    }
+                }
+                const result = await callAPI(url.toString(), apiConfig.key, apiConfig.host, apiConfig.method);
+                rows[i][apiColumnIndex] = apiConfig.resultKey ? result[apiConfig.resultKey] : JSON.stringify(result);
+            } catch (error) {
+                console.error(`Error enriching data for row ${i} with API ${apiConfig.name}:`, error);
+                rows[i][apiColumnIndex] = 'Error';
             }
-            const result = await callAPI(url.toString(), apiConfig.key, apiConfig.host, apiConfig.method);
-            rows[i][headers.indexOf(apiConfig.name)] = apiConfig.resultKey ? result[apiConfig.resultKey] : JSON.stringify(result);
-        } catch (error) {
-            console.error(`Error enriching data for row ${i} with API ${apiConfig.name}:`, error);
-            rows[i][headers.indexOf(apiConfig.name)] = 'Error';
         }
     }
 }
