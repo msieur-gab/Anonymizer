@@ -169,74 +169,74 @@ function isImageUrl(url) {
 }
 
 function setupColumnVisibility() {
-  const dropdown = document.getElementById('columnVisibilityDropdown');
-  const toggleButton = dropdown.querySelector('.dropdown-toggle');
-  const dropdownMenu = dropdown.querySelector('.dropdown-menu');
-  const columnList = document.getElementById('columnList');
-  const searchInput = document.getElementById('columnSearch');
-  const hideAllButton = document.getElementById('hideAllColumns');
-  const showAllButton = document.getElementById('showAllColumns');
+    const dropdown = document.getElementById('columnVisibilityDropdown');
+    const toggleButton = dropdown.querySelector('.dropdown-toggle');
+    const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+    const columnList = document.getElementById('columnList');
+    const searchInput = document.getElementById('columnSearch');
+    const hideAllButton = document.getElementById('hideAllColumns');
+    const showAllButton = document.getElementById('showAllColumns');
 
-  // Vider la liste existante
-  columnList.innerHTML = '';
+    // Clear the existing list
+    columnList.innerHTML = '';
 
-  // Toggle dropdown
-  toggleButton.addEventListener('click', () => {
-    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-  });
-
-  // Close dropdown when clicking outside
-  window.addEventListener('click', (e) => {
-    if (!dropdown.contains(e.target)) {
-      dropdownMenu.style.display = 'none';
-    }
-  });
-
-  // Populate column list
-  headers.forEach((header, index) => {
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.id = `toggle-col-${index}`;
-    checkbox.checked = true;
-
-    const label = document.createElement('label');
-    label.htmlFor = `toggle-col-${index}`;
-    label.textContent = header;
-
-    const wrapper = document.createElement('div');
-    wrapper.className = 'column-toggle';
-    wrapper.appendChild(checkbox);
-    wrapper.appendChild(label);
-
-    columnList.appendChild(wrapper);
-
-    checkbox.addEventListener('change', () => toggleColumnVisibility(index, checkbox.checked));
-  });
-
-  // Search functionality
-  searchInput.addEventListener('input', () => {
-    const searchTerm = searchInput.value.toLowerCase();
-    columnList.querySelectorAll('.column-toggle').forEach(toggle => {
-      const label = toggle.querySelector('label');
-      toggle.style.display = label.textContent.toLowerCase().includes(searchTerm) ? '' : 'none';
+    // Toggle dropdown
+    toggleButton.addEventListener('click', () => {
+        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
     });
-  });
 
-  // Hide all columns
-  hideAllButton.addEventListener('click', () => {
-    columnList.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-      checkbox.checked = false;
-      toggleColumnVisibility(parseInt(checkbox.id.split('-')[2]), false);
+    // Close dropdown when clicking outside
+    window.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+            dropdownMenu.style.display = 'none';
+        }
     });
-  });
 
-  // Show all columns
-  showAllButton.addEventListener('click', () => {
-    columnList.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-      checkbox.checked = true;
-      toggleColumnVisibility(parseInt(checkbox.id.split('-')[2]), true);
+    // Populate column list
+    headers.forEach((header, index) => {
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `toggle-col-${index}`;
+        checkbox.checked = true;
+
+        const label = document.createElement('label');
+        label.htmlFor = `toggle-col-${index}`;
+        label.textContent = header;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'column-toggle';
+        wrapper.appendChild(checkbox);
+        wrapper.appendChild(label);
+
+        columnList.appendChild(wrapper);
+
+        checkbox.addEventListener('change', () => toggleColumnVisibility(index, checkbox.checked));
     });
-  });
+
+    // Search functionality
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        columnList.querySelectorAll('.column-toggle').forEach(toggle => {
+            const label = toggle.querySelector('label');
+            toggle.style.display = label.textContent.toLowerCase().includes(searchTerm) ? '' : 'none';
+        });
+    });
+
+    // Hide all columns
+    hideAllButton.addEventListener('click', () => {
+        columnList.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = false;
+            toggleColumnVisibility(parseInt(checkbox.id.split('-')[2]), false);
+        });
+    });
+
+    // Show all columns
+    showAllButton.addEventListener('click', () => {
+        columnList.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = true;
+            toggleColumnVisibility(parseInt(checkbox.id.split('-')[2]), true);
+        });
+    });
 }
 
 function toggleColumnVisibility(columnIndex, isVisible) {
@@ -455,29 +455,23 @@ function anonymizeValue(value, type) {
 }
 
 function setupExportOptions() {
-  const dropdown = document.getElementById('exportDropdown');
-  const toggleButton = dropdown.querySelector('.dropdown-toggle');
-  const dropdownMenu = dropdown.querySelector('.dropdown-menu');
-	
-	// const exportNote = document.createElement('p');
-	// exportNote.textContent = 'Note: Exports include all columns, including hidden ones.';
-	// exportNote.style.fontSize = '0.8em';
-	// exportNote.style.color = '#666';
-	// dropdown.appendChild(exportNote);
+    const dropdown = document.getElementById('exportDropdown');
+    const toggleButton = dropdown.querySelector('.dropdown-toggle');
+    const dropdownMenu = dropdown.querySelector('.dropdown-menu');
 
-  toggleButton.addEventListener('click', () => {
-    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-  });
+    toggleButton.addEventListener('click', () => {
+        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    });
 
-  window.addEventListener('click', (e) => {
-    if (!dropdown.contains(e.target)) {
-      dropdownMenu.style.display = 'none';
-    }
-  });
+    window.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+            dropdownMenu.style.display = 'none';
+        }
+    });
 
-  document.getElementById('exportCSV').addEventListener('click', exportCSV);
-  document.getElementById('exportJSON').addEventListener('click', exportJSON);
-  document.getElementById('exportXLSX').addEventListener('click', exportXLSX);
+    document.getElementById('exportCSV').addEventListener('click', exportCSV);
+    document.getElementById('exportJSON').addEventListener('click', exportJSON);
+    document.getElementById('exportXLSX').addEventListener('click', exportXLSX);
 }
 
 function getExportData() {
